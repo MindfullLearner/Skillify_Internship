@@ -6,6 +6,7 @@ def add_student():
     if not data_file_valid:  # to not allow adding student data if the data file is corrupted
         print("Cannot add student because the data file is corrupted.")
         return
+    print("\n========== ADD STUDENT ===============")
     valid_name=False
     while not valid_name:       
         name = input("Enter student name: ").strip()
@@ -56,24 +57,13 @@ def add_student():
     if data_file_valid:
         save_students_to_file()   # to save the studenst data in file 
         print("Student added successfully!")
-        
+        print("==================END=====================")
+        display_student_summary(student)
     else:
         print("Failed to add student. Please check the data file.")
+        print("==================END=====================")
         return
     
-    print("========== STUDENT SUMMARY ==========")
-    print(f"Name: {name}")
-    print(f"Roll Number: {roll_no}")
-    print("\nSubject-wise Marks:")
-    for subject, marks in student["marks"].items():
-        print(f"{subject}: {marks}")
-    print("\nTotal Marks:", sum(student["marks"].values()))  # calculate the total marks and print it
-    average_marks= calculate_average(student["marks"])  # call the function to calculate the average marks
-    print(f"Average: {average_marks:.2f}")
-    print(f"Grade: {calculate_grade(average_marks)}")  # call the function to calculate the grade and print it
-    print(f"Performance: {get_performance_level(average_marks)}")  # call the function to calculate the performance level and print it
-    print("\n=======================================")
-
 def calculate_average(marks):
     total_marks = sum(marks.values())  # sum of all the marks
     average = total_marks / len(marks)  # calculate the average marks
@@ -117,9 +107,6 @@ def save_students_to_file():
         print("Saving is blocked due to file validation issues.")
     
 
-
-
-
 def load_students_from_file():
     global data_file_valid
     try:
@@ -132,12 +119,74 @@ def load_students_from_file():
         print("Error: Failed to decode JSON from the file. Starting with an empty student list.")
         data_file_valid = False  # set the data_file_valid flag to False
         return []     # Return an empty list
-    
+
+def display_all_students():
+    if not students:
+        print("No student records found.")
+        return
+
+    print("\n========== ALL STUDENT RECORDS =========")
+    for student in students:
+        print("-" * 40)
+        print(f"Name: {student['name']}")
+        print(f"Roll Number: {student['roll_no']}")
+        print("Subject-wise Marks:")
+        for subject, marks in student["marks"].items():
+            print(f"{subject}: {marks}")
+        average = calculate_average(student["marks"])
+        print(f"Average: {average:.2f}")
+        print(f"Grade: {calculate_grade(average)}")
+
+    print("================END========================")
+
+def display_student_summary(student):
+    print("========== STUDENT SUMMARY ==========")
+    # Display name
+    print(f"Name: {student['name']}")
+    # Display roll number
+    print(f"Roll Number: {student['roll_no']}")
+    # Display subject-wise marks
+    print("Subject-wise Marks:")
+    for subject, marks in student["marks"].items():
+        print(f"{subject}: {marks}")
+    # Calculate and display total
+    total = sum(student["marks"].values())
+    print(f"Total: {total}")
+    # Calculate and display average
+    average = calculate_average(student["marks"])
+    print(f"Average: {average:.2f}")
+    # Display grade
+    print(f"Grade: {calculate_grade(average)}")
+    # Display performance
+    print(f"Performance: {get_performance_level(average)}")
+    print("\n===============END=====================")
+
+def show_menu():   
+    print("======STUDENT PERFORMANCE ANALYZER=======")
+    is_running=True
+    while is_running:
+        print("Menu: ")
+        print("1. Add Student")
+        print("2. Display all Students Record")
+        print("3. Exit")
+        try:
+            option=int(input("Enter the option: "))
+            if option<0:
+                print("Invalid Option. Please Try again.")
+                continue
+            if option==1:
+                print("Available Subjects:", subjects)
+                add_student()
+            elif option==2:
+                display_all_students()
+            elif option==3:
+                is_running=False
+            else:
+                print("Invalid option. Please try again.")
+        except ValueError:
+            print("Error: Invalid option. Please enter a valid integer option.")
 students = load_students_from_file()
 
-print("STUDENT PERFORMANCE ANALYZER")
-print("-----------------------------")
+#main
+show_menu()
 
-print("Available Subjects:", subjects)
-add_student()  # call the function to add a student
-#print("Student Records:", students)  # print the student records to the terminal
