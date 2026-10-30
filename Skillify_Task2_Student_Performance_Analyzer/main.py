@@ -3,7 +3,13 @@ subjects = ("Mathematics", "English", "Computer Science") # a tuple that contain
 
 
 def add_student():
-    name = input("Enter student name: ")
+    valid_name=False
+    while not valid_name:       
+        name = input("Enter student name: ").strip()
+        if not name:  # check if the name is empty
+            print("Error: Name cannot be empty. Please enter a valid name.")
+        else:
+            valid_name=True  # set valid_name to True to exit the loop
     check=False  # a boolean variable to check if the roll number is valid
     while not check:
         try:
@@ -26,10 +32,24 @@ def add_student():
     }
     for subject in subjects:
         print(subject)
-        input_marks = int(input(f"Enter marks for {subject}: "))  # input marks for each subject 
-        student["marks"][subject] = input_marks  # append the marks to the student dictionary
-    
-    students.append(student)  # appends adds the student dictionary to the students list
+        valid_marks = False
+        while not valid_marks:
+            try:
+                # Take marks input
+                input_marks = int(input(f"Enter marks for {subject}: "))  # input marks for each subject 
+                # Validate marks range
+                if not 0 <= input_marks <= 100:
+                    print("Error: Marks must be between 0 and 100.")
+                    valid_marks = False
+                else:
+                    valid_marks = True
+                    student["marks"][subject] = input_marks  # append the marks to the student dictionary
+
+            except ValueError:
+                # Display an appropriate error message
+                print("Error: Invalid marks. Please enter a valid integer.")
+    students.append(student)  # appends adds the student dictionary to the students list       
+        
 
     print("Student added successfully!")
     save_students_to_file()   # to save the studenst dat in file 
