@@ -1,0 +1,29 @@
+[
+    {
+        "name": "Ali",
+        "roll_no": 245,
+        "marks": {
+            "Mathematics": 30,
+            "English": 60,
+            "Computer Science": 57
+        }
+    },
+    {
+        "name": "Ahmad",
+        "roll_no": 256,
+        "marks": {
+            "Mathematics": 50,
+            "English": 70,
+            "Computer Science": 80
+        }
+    },
+    {
+        "name": "mahi",
+        "roll_no": 123,
+        "marks": {
+            "Mathematics": 40,
+            "English": 80,
+            "Computer Science": 79
+        }
+    }
+]
