@@ -1,8 +1,11 @@
 import json  # import the json module to work with JSON data
 subjects = ("Mathematics", "English", "Computer Science") # a tuple that contains the subjects
-
+data_file_valid = True
 
 def add_student():
+    if not data_file_valid:  # to not allow adding student data if the data file is corrupted
+        print("Cannot add student because the data file is corrupted.")
+        return
     valid_name=False
     while not valid_name:       
         name = input("Enter student name: ").strip()
@@ -50,9 +53,14 @@ def add_student():
                 print("Error: Invalid marks. Please enter a valid integer.")
     students.append(student)  # appends adds the student dictionary to the students list       
         
-
-    print("Student added successfully!")
-    save_students_to_file()   # to save the studenst dat in file 
+    if data_file_valid:
+        save_students_to_file()   # to save the studenst data in file 
+        print("Student added successfully!")
+        
+    else:
+        print("Failed to add student. Please check the data file.")
+        return
+    
     print("========== STUDENT SUMMARY ==========")
     print(f"Name: {name}")
     print(f"Roll Number: {roll_no}")
@@ -101,16 +109,30 @@ def get_performance_level(average):
     
 
 def save_students_to_file():
-    with open("students.json", 'w') as file:
-        json.dump(students, file, indent=4)  # save the students list to a JSON file with indentation for readability
+    if data_file_valid:
+        with open("students.json", 'w') as file:
+                json.dump(students, file, indent=4)  # save the students list to a JSON file with indentation for readability
+    else:
+        # Display a message that saving is blocked
+        print("Saving is blocked due to file validation issues.")
+    
+
+
+
 
 def load_students_from_file():
+    global data_file_valid
     try:
         with open("students.json", 'r') as file:
             return json.load(file)  # load the students list from a JSON file
     except FileNotFoundError:
         return []  # if the file does not exist, return an empty list
-
+    except json.JSONDecodeError:
+    # Display an error message
+        print("Error: Failed to decode JSON from the file. Starting with an empty student list.")
+        data_file_valid = False  # set the data_file_valid flag to False
+        return []     # Return an empty list
+    
 students = load_students_from_file()
 
 print("STUDENT PERFORMANCE ANALYZER")
