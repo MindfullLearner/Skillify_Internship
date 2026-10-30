@@ -1,7 +1,6 @@
 import json  # import the json module to work with JSON data
 subjects = ("Mathematics", "English", "Computer Science") # a tuple that contains the subjects
 
-students = []  # a  list to store the grades
 
 def add_student():
     name = input("Enter student name: ")
@@ -65,11 +64,21 @@ def get_performance_level(average):
         return "Below Average"
     else:
         return "Poor"
+    
 
 def save_students_to_file():
     with open("students.json", 'w') as file:
         json.dump(students, file, indent=4)  # save the students list to a JSON file with indentation for readability
-#dictionary that contains the student records like name,rollno,marks etc
+
+def load_students_from_file():
+    try:
+        with open("students.json", 'r') as file:
+            return json.load(file)  # load the students list from a JSON file
+    except FileNotFoundError:
+        return []  # if the file does not exist, return an empty list
+
+students = load_students_from_file()
+
 print("STUDENT PERFORMANCE ANALYZER")
 print("-----------------------------")
 
