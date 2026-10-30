@@ -4,7 +4,21 @@ subjects = ("Mathematics", "English", "Computer Science") # a tuple that contain
 
 def add_student():
     name = input("Enter student name: ")
-    roll_no = int(input("Enter student roll number: "))
+    check=False  # a boolean variable to check if the roll number is valid
+    while not check:
+        try:
+            roll_no = int(input("Enter student roll number: "))  # input the roll number and convert it to an integer
+            if any(student["roll_no"] == roll_no for student in students):  # check if the roll number already exists in the students list
+                print("Error: Roll number already exists. Please enter a unique roll number.")
+                check = False  # set check to False to continue the loop
+            elif roll_no <= 0:  # check if the roll number is a positive integer
+                print("Error: Roll number must be a positive integer.")
+                check = False  # set check to False to continue the loop
+            else:
+                check = True  # set check to True to exit the loop
+        except ValueError:
+            print("Error: Invalid roll number. Please enter a valid integer.")
+            
     student = {
         "name": name,
         "roll_no": roll_no,
