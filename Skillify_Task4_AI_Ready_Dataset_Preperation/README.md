@@ -194,5 +194,5 @@ This project demonstrates the importance of data preprocessing before building M
 
 By applying appropriate preprocessing techniques, the Titanic dataset was transformed into a structured format suitable for further Machine Learning experimentation.
 
-**Internship:** Skillify — Generative AI & Prompt Engineering  
+**Internship:** Skillify — Artificial Intelligence
 **Task:** Task 4 — AI-Ready Dataset Preparation
